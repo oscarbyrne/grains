@@ -40,24 +40,11 @@ void setup() {
   sei(); //enable interrupts
 }
 
-int phase  = 0;
-boolean build_complete = false
-
-/** Grain parameters **/
-int period     = 800;
-int duty_ratio = 1;
-int offset     = 0;
-int envelope   = 0;
-
-void loop() {
-  
-  build_grain();
-}
-
 /** Invoked by timer2 at SR of 25kHz **/
 ISR(PWM_INTERRUPT) {
-  ++phase;
-  phase = phase%period;
-  PWM_VALUE = grain[phase];
+  if (Serial.available() > 0) {
+    // read the incoming byte:
+    PWM_VALUE = Serial.read();
+  }
 }
 
